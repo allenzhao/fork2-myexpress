@@ -1,10 +1,17 @@
 module.exports = function express() {
-    var httpServer = require('http');
-    var events = function(request, response) {
+    var http = require('http');
+
+    var app = function(request, response) {
         response.statusCode = 404;
         response.end();
     }
-    var app = httpServer.createServer(events);
 
+    app.listen = function(port, callback) {
+        var server = http.createServer(this);
+        server.listen(port, function() {
+            callback();
+        })
+        return server;
+    }
     return app;
 }
